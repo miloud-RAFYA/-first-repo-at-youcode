@@ -2,8 +2,13 @@
 #include <string.h>
 
 // prototype | files | pointeur | linkedList. mysql
-
-
+void ajouterEtudiant();
+float note(int j, int c);
+int rech(char _nom[30]);
+void saisirNotes();
+void affiche_etudiants();
+float calculerMoyenneEtudiant();
+float calculerMoyenneGenerale();
 typedef struct
 {
     char cne[20];
@@ -16,6 +21,43 @@ Etudiant classe[30];
 
 int nbEtudiants = 0;
 
+int main()
+{
+    int ch;
+    do
+    {
+        printf("\t1) Ajouter un etudiant .\n");
+        printf("\t2) Saisir les notes d un etudiant .\n");
+        printf("\t3) Afficher tous les etudiants .\n");
+        printf("\t4) Afficher bulletin d un etudiant .\n");
+        printf("\t5) Calculer la moyenne generale .\n");
+        printf("\t0) Quitter .\n");
+        printf("\t\tentre le choix :");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            ajouterEtudiant();
+            nbEtudiants++;
+            break;
+        case 2:
+            saisirNotes();
+            break;
+        case 3:
+            affiche_etudiants();
+            break;
+        case 4:
+            calculerMoyenneEtudiant();
+            break;
+        case 5:
+            calculerMoyenneGenerale();
+            break;
+        }
+    } while (ch != 0);
+
+    return 0;
+}
+
 void ajouterEtudiant()
 {
     printf("entre le CNE d etudiant %d :", nbEtudiants + 1);
@@ -25,35 +67,44 @@ void ajouterEtudiant()
     printf("entre le prenom d etudiant %d :", nbEtudiants + 1);
     scanf("%s", &classe[nbEtudiants].prenom);
 }
-
+float note(int j, int c)
+{
+    float n;
+    printf("entre la note %d d etudiant %s :", j + 1, classe[c].nom);
+    scanf("%f", &n);
+    while (n > 20)
+    {
+        printf("entre la note compris entre 0 et 20 :");
+        scanf("%f", &n);
+    }
+    return n;
+}
+int rech(char _nom[30])
+{
+    for (int i = 0; i <= nbEtudiants; i++)
+    {
+        if (strcmp(classe[i].nom, _nom) == 0)
+        {
+            return i;
+        }
+        return -1;
+    }
+}
 void saisirNotes()
 {
     char nom[30];
     printf("entre le nom d etudiant :");
     scanf("%s", &nom);
-    int c = 0;
-    for (int i = 0; i <= nbEtudiants; i++)
+    int c = rech(nom);
+    if (c > -1)
     {
-        if (strcmp(classe[i].nom, nom) == 0)
+        for (int j = 0; j < 4; j++)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                int n;
-                printf("entre la note %d d etudiant %d :", j + 1, nbEtudiants);
-                scanf("%f", &n);
-                if (n >= 0 && n <= 20)
-                {
-                    classe[i].notes[j] = n;
-                }
-                else
-                {
-                    printf("entre la note co;pris entre 0 et 20 :\n");
-                }
-            }
-            c = 1;
+            float n = note(j, c);
+            classe[c].notes[j] = n;
         }
     }
-    if (c == 0)
+    else
     {
         printf("etudiant de  nom %s ne trouve:\n", nom);
     }
@@ -71,7 +122,7 @@ void affiche_etudiants()
             printf("[");
             for (int j = 0; j < 4; j++)
             {
-                printf(",%.2f", classe[i].notes[j]);
+                printf("|%.2f", classe[i].notes[j]);
             }
             printf("]\n");
         }
@@ -108,40 +159,4 @@ float calculerMoyenneGenerale()
     }
     mygenerale = somme / nbEtudiants;
     printf("la moyenne generale de classe est :%.3f\n", mygenerale);
-}
-int main()
-{
-    int ch;
-    do
-    {
-        printf("\t1) Ajouter un etudiant .\n");
-        printf("\t2) Saisir les notes d un etudiant .\n");
-        printf("\t3) Afficher tous les etudiants .\n");
-        printf("\t4) Afficher bulletin d un etudiant .\n");
-        printf("\t5) Calculer la moyenne generale .\n");
-        printf("\t0) Quitter .\n");
-        printf("\t\tentre le choix :");
-        scanf("%d", &ch);
-        switch (ch)
-        {
-        case 1:
-            ajouterEtudiant();
-            nbEtudiants++;
-            break;
-        case 2:
-            saisirNotes();
-            break;
-        case 3:
-            affiche_etudiants();
-            break;
-        case 4:
-            calculerMoyenneEtudiant();
-            break;
-        case 5:
-            calculerMoyenneGenerale();
-            break;
-        }
-    } while (ch != 0);
-
-    return 0;
 }
