@@ -1,29 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <string.h>
 // prototype | files | pointeur | linkedList. mysql
-typedef struct {
+typedef struct
+{
     char cne[20];
     char nom[40];
     char prenom[40];
     float notes[4];
     float moyenne;
 } Etudiant;
-
-Etudiant* classe = NULL;
+FILE *Ficher;
+Etudiant *classe = NULL;
 int nbEtudiants = 0;
-
-void ajouterEtudiant(Etudiant** classe, int* nb);
-float note(int j, Etudiant* e);
-int rech(char* nom);
+void ajouterEtudiant(Etudiant **classe, int *nb);
+float note(int j, Etudiant *e);
+int rech(char *nom);
+void ajouter_donne_fil(Etudiant e);
 void saisirNotes();
 void affiche_etudiants();
 float calculerMoyenneEtudiant();
 float calculerMoyenneGenerale();
 
-int main() {
+int main()
+{
     int ch;
-    do {
+    do
+    {
         printf("\n\t1) Ajouter un etudiant .\n");
         printf("\t2) Saisir les notes un etudiant .\n");
         printf("\t3) Afficher tous les etudiants .\n");
@@ -33,32 +37,41 @@ int main() {
         printf("\t\tEntrez votre choix : ");
         scanf("%d", &ch);
 
-        switch (ch) {
-            case 1:
-                ajouterEtudiant(&classe, &nbEtudiants);
-                break;
-            case 2:
-                saisirNotes();
-                break;
-            case 3:
-                affiche_etudiants();
-                break;
-            case 4:
-                calculerMoyenneEtudiant();
-                break;
-            case 5:
-                calculerMoyenneGenerale();
-                break;
+        switch (ch)
+        {
+        case 1:
+            ajouterEtudiant(&classe, &nbEtudiants);
+            // minprojet_text=(char*)realloc(minprojet_text,sizeof(Etudiant));
+
+            break;
+        case 2:
+            saisirNotes();
+            break;
+        case 3:
+            affiche_etudiants();
+            break;
+        case 4:
+            affiche_etudiants();
+            calculerMoyenneEtudiant();
+            break;
+        case 5:
+            affiche_etudiants();
+            calculerMoyenneGenerale();
+            break;
         }
     } while (ch != 0);
+    ajouter_donne_fil(classe[nbEtudiants - 1]);
+    fclose(Ficher);
+    free(classe);
 
-    free(classe); 
     return 0;
 }
 
-void ajouterEtudiant(Etudiant** classe, int* nb) {
-    *classe = (Etudiant*) realloc(*classe, (*nb + 1) * sizeof(Etudiant));
-    if (*classe == NULL) {
+void ajouterEtudiant(Etudiant **classe, int *nb)
+{
+    *classe = (Etudiant *)realloc(*classe, (*nb + 1) * sizeof(Etudiant));
+    if (*classe == NULL)
+    {
         printf("un probleme pour cree un autre etudiant :.\n");
         exit(1);
     }
@@ -71,77 +84,107 @@ void ajouterEtudiant(Etudiant** classe, int* nb) {
     (*nb)++;
 }
 
-float note(int j, Etudiant* e) {
+void ajouter_donne_fil(Etudiant e)
+{   
+    calculerMoyenneEtudiant(e);
+    Ficher = fopen("miniprojet.txt", "a");
+    if (Ficher == NULL)
+    {
+        printf("erreur de ouvrer le fiche .");
+        exit(-1);
+    }
+    fprintf(Ficher, "%s\t%s\t%s\t", e.cne, e.nom, e.prenom);
+    for (int j = 0; j < 4; j++)
+    {
+        fprintf(Ficher, "%.2f\t", e.notes[j]);
+    }
+    fprintf(Ficher, "%.2f\n", e.moyenne);
+    fclose(Ficher);
+}
+float note(int j, Etudiant *e)
+{
     float n;
     printf("Entrez la note %d de etudiant %s : ", j + 1, e->nom);
     scanf("%f", &n);
-    while (n < 0 || n > 20) {
+    while (n < 0 || n > 20)
+    {
         printf("Entrez une note entre 0 et 20 : ");
         scanf("%f", &n);
     }
     return n;
 }
 
-int rech(char* _nom) {
-    for (int i = 0; i < nbEtudiants; i++) {
-        if (strcmp(classe[i].nom, _nom) == 0) {
+int rech(char *_nom)
+{
+    for (int i = 0; i < nbEtudiants; i++)
+    {
+        if (strcmp(classe[i].nom, _nom) == 0)
+        {
             return i;
         }
     }
     return -1;
 }
 
-void saisirNotes() {
+void saisirNotes()
+{
     char nom[30];
     printf("Entrez le nom de l etudiant : ");
     scanf("%s", nom);
     int c = rech(nom);
-    if (c > -1) {
-        for (int j = 0; j < 4; j++) {
+    if (c > -1)
+    {
+        for (int j = 0; j < 4; j++)
+        {
             float n = note(j, &classe[c]);
             classe[c].notes[j] = n;
         }
-    } else {
+    }
+    else
+    {
         printf("etudiant avec le nom %s introuvable.\n", nom);
     }
 }
 
-void affiche_etudiants() {
-    if (nbEtudiants > 0) {
-        for (int i = 0; i < nbEtudiants; i++) {
-            printf("\nEtudiant %d :\n", i + 1);
-            printf("  CNE     : %s\n", classe[i].cne);
-            printf("  Nom     : %s\n", classe[i].nom);
-            printf("  Prenom  : %s\n", classe[i].prenom);
-            printf("  Notes   : [");
-            for (int j = 0; j < 4; j++) {
-                printf("%.2f ", classe[i].notes[j]);
-            }
-            printf("]\n");
+void affiche_etudiants()
+{
+    
+    if (nbEtudiants > 0)
+    {
+        Ficher = fopen("miniprojet.txt", "r");
+        if (Ficher == NULL)
+        {
+            printf("erreur de ouvrer le fiche .");
         }
-    } else {
+        char text[256];
+        while (fgets(text, sizeof(text), Ficher) != NULL)
+        {
+            printf("%s", text);
+        }
+    }
+    else
+    {
         printf("La liste des étudiants est vide.\n");
     }
 }
 
-float calculerMoyenneEtudiant() {
-    affiche_etudiants();
+float calculerMoyenneEtudiant(Etudiant e)
+{
     float somme = 0;
-    for (int i = 0; i < nbEtudiants; i++) {
-        for (int j = 0; j < 4; j++) {
-            somme += classe[i].notes[j];
+        for (int j = 0; j < 4; j++)
+        {
+            somme += e.notes[j];
         }
-        classe[i].moyenne = somme / 4;
+        e.moyenne = somme / 4;
         somme = 0;
-        printf("Moyenne de %s  est : %.2f\n", classe[i].nom, classe[i].moyenne);
-    }
-    return 0;
+        return e.moyenne;
 }
-
-float calculerMoyenneGenerale() {
-    calculerMoyenneEtudiant(); 
+float calculerMoyenneGenerale()
+{
+    calculerMoyenneEtudiant();
     float total = 0;
-    for (int i = 0; i < nbEtudiants; i++) {
+    for (int i = 0; i < nbEtudiants; i++)
+    {
         total += classe[i].moyenne;
     }
     float mg = nbEtudiants > 0 ? total / nbEtudiants : 0;
