@@ -20,7 +20,7 @@ int rech(char *nom);
 void ajouter_donne_fil(Etudiant e);
 void saisirNotes();
 void affiche_etudiants();
-float calculerMoyenneEtudiant();
+float calculerMoyenneEtudiant(Etudiant e);
 float calculerMoyenneGenerale();
 
 int main()
@@ -52,7 +52,7 @@ int main()
             break;
         case 4:
             affiche_etudiants();
-            calculerMoyenneEtudiant();
+            calculerMoyenneEtudiant(classe[nbEtudiants]);
             break;
         case 5:
             affiche_etudiants();
@@ -181,7 +181,6 @@ float calculerMoyenneEtudiant(Etudiant e)
 }
 float calculerMoyenneGenerale()
 {
-    calculerMoyenneEtudiant();
     float total = 0;
     for (int i = 0; i < nbEtudiants; i++)
     {

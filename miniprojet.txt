@@ -1,2 +1,3 @@
 ewrag	miloud	rafya	14.00	15.00	17.00	12.00	0.00
 gewr	miloud	dfsws	14.00	15.00	12.00	17.00	0.00
+afd	miloud	dacs	12.00	13.00	12.00	14.00	0.00
