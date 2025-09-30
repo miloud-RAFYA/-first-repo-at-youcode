@@ -90,18 +90,67 @@ int main()
     
 
 
-    int t[5]={1,8,7,6,9};
-    int n=0;
-    int t1[n];
-    int j=0;
-    int t2[j];
-    for(int i=0;i<5;i++){
-       if(t[i]%2==0){
-         printf("%d\n",t[i]);
-    }else{
-        printf("%d\n",t[i]);
-    }
-}
+//     int t[5]={1,8,7,6,9};
+//     int n=0;
+//     int t1[n];
+//     int j=0;
+//     int t2[j];
+//     for(int i=0;i<5;i++){
+//        if(t[i]%2==0){
+//          printf("%d\n",t[i]);
+//     }else{
+//         printf("%d\n\t",t[i]);
+//     }
+// }
+
+
+
+    // int t[5] = {1, 8, 7, 6, 9};
+    // int c;
+    // int tap;
+    // do
+    // {
+    //     c=0;
+    //     for (int i = 0; i < 5; i++)
+    //     {
+    //         if(t[i]>t[i+1]){
+    //            tap=t[i];
+    //            t[i]=t[i+1];
+    //            t[i+1]=tap;
+    //            c=1;
+    //         }
+         
+    //     }
+    // }while(c==1);
+    //  for (int i = 0; i < 5; i++)
+    //     {
+    //         printf("%d",t[i]);
+    //     }
+
+
+    // int t2[6]={2,6,10,13,17,19};
+    // int r=0;
+    // int l=6-1;
+    // int n;
+    // printf("entre un nombre :");
+    // scanf("%d",&n);
+    // while(r<=l){
+    //      int mid=(l+r)/2;
+    //     if(t2[mid]==n){
+    //        printf("le nombre et existe :\n");
+    //        break;
+    //     }else if(t2[mid]<n){
+    //         r=mid+1;
+
+    //     }else{
+    //         l=mid-1;
+    //     }
+    // }
+    // printf("le nobre n exsiste pas:");
+     
+
     
+
+     
    return 0;
 }

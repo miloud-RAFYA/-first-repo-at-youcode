@@ -8,5 +8,12 @@ typedef struct{
     float moyenne; 
 }Etudiant;
 Etudiant *classe;
-int nbEtudiant;
+int nbEtudiant=0;
+void ajouterEtudiant(Etudiant **classe, int *nbEtudiant);
+void saisirEtudiant();
+void Af_Etudiant();
+void List_Etudiant();
+void mod_etudiant();
+void Sup_Etudiant();
+void trierEtudiants();
 #endif
